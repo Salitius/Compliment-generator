@@ -1,0 +1,52 @@
+
+#include<time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <LiquidCrystal.h>  
+
+const int rs = 12, en =11, d4 = 6, d5 = 5, d6 = 4, d7= 3;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+boolean generated = false;
+
+String nouns[] = {"eyes", "nose", "face", "ears", "body", "smile", "hair", "brain", "legs", "lips",
+         "personality", "love", "style", "talents", "hugs", "passion", "heart", "tummy", "glasses","arms", "skin", "hands", "neck", "kisses"}; //Noun Array
+ String adjectives[] = {"beautiful", "cool", "swag", "tasty", "cute", "wavy", "smart", "curvy", "thicc", "soft", "sweet",
+              "lovely", "mesmerizing", "passionate", "perfect", "playful", "ravishing", "remarkable", "romantic",
+              "spontaneous", "strong", "tender-hearted", "unique", "warm", "wonderful", "fine"}; // Adjectives Array
+
+ int nounSize = *(&nouns + 1) - nouns; // Variable that is the length of Noun
+ int adjSize = *(&adjectives + 1) - adjectives; // Variable that is the length of Adjective
+ 
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(3,INPUT);
+   lcd.begin(16, 2);  
+
+}
+
+
+void loop() {
+srand(millis());
+lcd.setCursor(0,0);
+ int buttonState = digitalRead(2);
+  
+if (buttonState == 1){
+  int nounNumber = (rand() % nounSize) ; //Generates a random number from 1 through nounSize based off a seed
+int adjNumber = (rand() % adjSize) ;// Generates a random number from 1 through adjSize based off a seed
+    String nounstr = (nouns[nounNumber]);
+    String adjstr = (adjectives[adjNumber]);
+    lcd.print("Y  our " + nounstr + " is/are very " + adjstr + "!" + "       " );
+   /* lcd.print (nouns[nounNumber]);
+    lcd.print(" is/are very ");
+    lcd.print(adjectives[adjNumber]);
+    lcd.print("!" );
+    lcd.print("       ");*/
+    Serial.print("your " + nouns[nounNumber] + " is/are very " + adjectives[adjNumber] + "!!!");
+} else {
+  lcd.scrollDisplayLeft();
+  delay(300);
+}
+
+}
